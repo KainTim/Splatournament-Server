@@ -16,7 +16,7 @@ public class UserController{
         return service.verifyLogin(username,password);
     }
     @PostMapping("add-user")
-    public void addUser(@RequestParam String username, @RequestParam String password){
-        service.addUser(username,password);
+    public boolean addUser(@RequestParam String username, @RequestParam String password){
+        return service.addUser(username,password);
     }
 }

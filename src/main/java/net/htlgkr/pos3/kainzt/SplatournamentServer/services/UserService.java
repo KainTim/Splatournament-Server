@@ -15,10 +15,14 @@ public class UserService {
                 .anyMatch(splatUser -> splatUser.getPassword().equals(password));
     }
 
-    public void addUser(String username, String password) {
+    public boolean addUser(String username, String password) {
         SplatUser splatUser = new SplatUser();
         splatUser.setUsername(username);
         splatUser.setPassword(password);
+        if (repository.findAll().stream().anyMatch(splatUser1 -> splatUser1.getUsername().equals(username))) {
+            return false;
+        }
         repository.save(splatUser);
+        return true;
     }
 }
