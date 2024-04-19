@@ -32,6 +32,7 @@ public class TeamService {
         if (optionalTeam.isEmpty()) {
             return false;
         }
+        optionalTeam.get().getTeamMembers().add(user);
         user.setTeam(optionalTeam.get());
         return true;
     }
