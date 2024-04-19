@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class SplatUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     Long id;
 
     String username;
