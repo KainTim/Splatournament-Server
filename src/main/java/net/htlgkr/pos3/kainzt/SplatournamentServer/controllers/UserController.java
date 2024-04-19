@@ -1,9 +1,12 @@
 package net.htlgkr.pos3.kainzt.SplatournamentServer.controllers;
 
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.UserDTO;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.models.SplatUser;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -18,5 +21,9 @@ public class UserController{
     @PostMapping("add-user")
     public boolean addUser(@RequestParam String username, @RequestParam String password){
         return service.addUser(username,password);
+    }
+    @PostMapping("admin/getAllUsers")
+    public List<SplatUser> getAllUsers(){
+        return service.getAllUsers();
     }
 }
