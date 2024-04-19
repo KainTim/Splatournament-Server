@@ -2,21 +2,24 @@ package net.htlgkr.pos3.kainzt.SplatournamentServer.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@NoArgsConstructor
+import java.util.List;
+
 @Getter
 @Setter
-public class SplatUser {
+@Entity
+@Table(name = "team")
+public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
+    private String name;
 
-    String username;
-    String password;
     @ManyToOne(cascade = CascadeType.ALL)
-    private Team team;
+    private Tournament tournament;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<SplatUser> teamMembers;
 
 }
