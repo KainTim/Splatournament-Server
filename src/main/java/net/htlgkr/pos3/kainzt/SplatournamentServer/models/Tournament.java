@@ -14,7 +14,6 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
-@RequiredArgsConstructor
 @Setter
 public class Tournament {
     @Id
