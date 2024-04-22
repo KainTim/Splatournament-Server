@@ -1,5 +1,6 @@
 package net.htlgkr.pos3.kainzt.SplatournamentServer.services;
 
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.UserDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.SplatUser;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Team;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.repositories.TeamRepository;
@@ -32,7 +33,8 @@ public class UserService {
         userRepository.save(splatUser);
         return true;
     }
-    public List<SplatUser> getAllUsers(){
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers(){
+        return userRepository.findAll().stream().map(splatUser -> new UserDTO(splatUser.getUsername(),
+                splatUser.getPassword())).toList();
     }
 }

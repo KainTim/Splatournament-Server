@@ -23,7 +23,7 @@ public class UserController{
         return service.addUser(username,password);
     }
     @PostMapping("admin/getAllUsers")
-    public List<SplatUser> getAllUsers(){
+    public List<UserDTO> getAllUsers(){
         return service.getAllUsers();
     }
 }
