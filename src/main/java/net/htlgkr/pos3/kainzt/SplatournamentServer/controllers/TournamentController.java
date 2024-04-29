@@ -1,12 +1,27 @@
 package net.htlgkr.pos3.kainzt.SplatournamentServer.controllers;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TournamentDTO;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Tournament;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.services.TournamentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/api/tournaments")
 public class TournamentController {
+    @Autowired
+    TournamentService tournamentService;
+
+    @GetMapping
+    public List<TournamentDTO> getCurrentTournaments(){
+        return tournamentService.getCurrentTournaments();
+    }
+    @PostMapping("add")
+    public void addTournament(@RequestBody Tournament tournament){
+        tournamentService.addTournament(tournament);
+    }
 
 }
