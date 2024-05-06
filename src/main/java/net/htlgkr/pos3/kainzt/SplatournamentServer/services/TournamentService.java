@@ -26,4 +26,8 @@ public class TournamentService {
     public void addTournament(Tournament tournament) {
         repository.save(tournament);
     }
+
+    public void deleteAllTournaments() {
+        repository.deleteAll();
+    }
 }
