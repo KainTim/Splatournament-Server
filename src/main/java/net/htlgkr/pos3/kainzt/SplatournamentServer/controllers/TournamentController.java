@@ -20,8 +20,13 @@ public class TournamentController {
         return tournamentService.getCurrentTournaments();
     }
     @PostMapping("add")
-    public void addTournament(@RequestBody Tournament tournament){
+    public TournamentDTO addTournament(@RequestBody Tournament tournament){
         tournamentService.addTournament(tournament);
+        return new TournamentDTO(tournament.getId(),
+                tournament.getName(),
+                tournament.getCreatedBy(),
+                tournament.getStyle(),
+                tournament.getCurrentPlayers().size());
     }
 
 }
