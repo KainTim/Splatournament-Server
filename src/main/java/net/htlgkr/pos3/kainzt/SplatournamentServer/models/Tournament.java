@@ -20,8 +20,10 @@ public class Tournament {
     @GeneratedValue
     private Long id;
     private String name;
-    private String createdBy;
+    private Long maxTeams;
+    private Long bestOf;
     private TournamentStyle style;
+    private String createdBy;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Team> currentPlayers;
