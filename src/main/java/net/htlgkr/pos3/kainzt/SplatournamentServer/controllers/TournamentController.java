@@ -31,7 +31,7 @@ public class TournamentController {
         tournamentService.addTournament(tournament1);
         return tournament;
     }
-    @DeleteMapping("/admin/delete")
+    @DeleteMapping("/admin/delete/all")
     public void deleteAllTournaments(){
         tournamentService.deleteAllTournaments();
     }
