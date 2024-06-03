@@ -75,9 +75,9 @@ public class TeamService {
 
     public TeamDTO joinTournament(Long teamId, Long tournamentId) {
         Optional<Tournament> tournamentToJoinOptional = tournamentRepository.findById(tournamentId);
-        if (tournamentToJoinOptional.isEmpty()) return null;
+        if (tournamentToJoinOptional.isEmpty()) return new TeamDTO(-1,null,null);
         Optional<Team> optionalTeam = teamRepository.findById(teamId);
-        if (optionalTeam.isEmpty()) return null;
+        if (optionalTeam.isEmpty()) return new TeamDTO(-1,null,null);
         Team team = optionalTeam.get();
         team.setTournament(tournamentToJoinOptional.get());
         tournamentToJoinOptional.get().getCurrentPlayers().add(team);
