@@ -29,5 +29,9 @@ public class TeamController {
     public boolean addTeam(@RequestParam String username, @RequestParam String password,@RequestParam String teamname){
         return teamService.addTeam(username,password,teamname);
     }
+    @PostMapping("joinTournament")
+    public TeamDTO joinTournament(@RequestParam Long tournamentId,@RequestParam Long teamId){
+        return teamService.joinTournament(teamId,tournamentId);
+    }
 
 }

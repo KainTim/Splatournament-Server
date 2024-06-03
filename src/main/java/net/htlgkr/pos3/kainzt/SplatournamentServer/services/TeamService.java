@@ -4,7 +4,9 @@ import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.UserDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.SplatUser;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Team;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Tournament;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.repositories.TeamRepository;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.repositories.TournamentRepository;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,10 @@ public class TeamService {
     TeamRepository teamRepository;
     @Autowired
     UserService userService;
+    @Autowired
+    private TournamentService tournamentService;
+    @Autowired
+    private TournamentRepository tournamentRepository;
 
     public boolean joinTeam(String username,String password,String teamName){
         if (!userService.verifyLogin(username,password)) return false;
@@ -65,5 +71,16 @@ public class TeamService {
         team.setTeamMembers(List.of(user));
         teamRepository.save(team);
         return true;
+    }
+
+    public TeamDTO joinTournament(Long teamId, Long tournamentId) {
+        Optional<Tournament> tournamentToJoinOptional = tournamentRepository.findById(tournamentId);
+        if (tournamentToJoinOptional.isEmpty()) return null;
+        Optional<Team> optionalTeam = teamRepository.findById(teamId);
+        if (optionalTeam.isEmpty()) return null;
+        Team team = optionalTeam.get();
+        team.setTournament(tournamentToJoinOptional.get());
+        tournamentToJoinOptional.get().getCurrentPlayers().add(team);
+        return new TeamDTO(teamId, team.getName(),team.getTeamMembers().stream().map(splatUser ->new UserDTO(splatUser.getUsername(), splatUser.getPassword())).toList());
     }
 }
