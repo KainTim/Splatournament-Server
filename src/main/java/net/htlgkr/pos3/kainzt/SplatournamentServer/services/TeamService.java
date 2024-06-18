@@ -1,5 +1,6 @@
 package net.htlgkr.pos3.kainzt.SplatournamentServer.services;
 
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamCreationDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TournamentDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.UserDTO;
@@ -55,13 +56,13 @@ public class TeamService {
         ).toList();
     }
 
-    public boolean addTeam(String username, String password, String teamName) {
-        if (!userService.verifyLogin(username,password)) return false;
+    public TeamCreationDTO addTeam(String username, String password, String teamName) {
+        if (!userService.verifyLogin(username,password)) return new TeamCreationDTO(null,null,null);
 
         Optional<Team> optionalTeam = teamRepository.findAll().stream()
                 .filter(team -> team.getName().equals(teamName)).findFirst();
         if (optionalTeam.isPresent()) {
-            return false;
+            return new TeamCreationDTO(null,null,null);
         }
         Team team = new Team();
         team.setName(teamName);
@@ -71,7 +72,7 @@ public class TeamService {
         user.setTeam(team);
         team.setTeamMembers(List.of(user));
         teamRepository.save(team);
-        return true;
+        return new TeamCreationDTO(username,password,teamName);
     }
 
     public TournamentDTO joinTournament(Long teamId, Long tournamentId) {

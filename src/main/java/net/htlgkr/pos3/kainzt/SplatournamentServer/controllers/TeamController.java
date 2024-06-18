@@ -1,6 +1,7 @@
 package net.htlgkr.pos3.kainzt.SplatournamentServer.controllers;
 
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.JoinTournamentDTO;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamCreationDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TournamentDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.SplatUser;
@@ -28,8 +29,8 @@ public class TeamController {
         return teamService.joinTeam(username,password,teamname);
     }
     @PostMapping("add")
-    public boolean addTeam(@RequestParam String username, @RequestParam String password,@RequestParam String teamname){
-        return teamService.addTeam(username,password,teamname);
+    public TeamCreationDTO addTeam(@RequestBody TeamCreationDTO teamCreationDTO){
+        return teamService.addTeam(teamCreationDTO.username(), teamCreationDTO.password(), teamCreationDTO.teamname());
     }
     @PostMapping("joinTournament")
     public TournamentDTO joinTournament(@RequestBody JoinTournamentDTO tournamentDTO){
