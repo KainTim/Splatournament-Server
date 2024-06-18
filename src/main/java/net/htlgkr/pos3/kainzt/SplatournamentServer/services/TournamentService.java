@@ -19,7 +19,7 @@ public class TournamentService {
                         tournament.getName(),
                         tournament.getCreatedBy(),
                         tournament.getStyle(),
-                        Math.toIntExact(tournament.getCurrentPlayers().size())))
+                        (long) tournament.getCurrentPlayers().size()))
                 .toList();
     }
 

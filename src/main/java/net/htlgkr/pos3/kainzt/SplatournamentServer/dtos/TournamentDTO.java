@@ -7,6 +7,6 @@ public record TournamentDTO(
     String name,
     String createdBy,
     TournamentStyle style,
-    int teamCount
+    Long teamCount
 ) {
 }

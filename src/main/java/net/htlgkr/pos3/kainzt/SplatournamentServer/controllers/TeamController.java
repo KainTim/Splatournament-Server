@@ -2,6 +2,7 @@ package net.htlgkr.pos3.kainzt.SplatournamentServer.controllers;
 
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.JoinTournamentDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamDTO;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TournamentDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.SplatUser;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Team;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.services.TeamService;
@@ -31,7 +32,7 @@ public class TeamController {
         return teamService.addTeam(username,password,teamname);
     }
     @PostMapping("joinTournament")
-    public TeamDTO joinTournament(@RequestBody JoinTournamentDTO tournamentDTO){
+    public TournamentDTO joinTournament(@RequestBody JoinTournamentDTO tournamentDTO){
         return teamService.joinTournament(tournamentDTO.teamId(), tournamentDTO.tournamentId());
     }
 

@@ -1,6 +1,7 @@
 package net.htlgkr.pos3.kainzt.SplatournamentServer.services;
 
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamDTO;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TournamentDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.UserDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.SplatUser;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Team;
@@ -47,7 +48,7 @@ public class TeamService {
         return teamRepository.findAll().stream().map(team -> new TeamDTO(team.getId(),
                     team.getName(),
                     team.getTeamMembers().stream().map(member -> {
-                        return new UserDTO(member.getUsername(), member.getPassword());
+                        return new UserDTO(member.getUsername(), member.getPassword(), member.getTeam().getId());
                     }
                 ).toList()
             )
@@ -73,14 +74,14 @@ public class TeamService {
         return true;
     }
 
-    public TeamDTO joinTournament(Long teamId, Long tournamentId) {
+    public TournamentDTO joinTournament(Long teamId, Long tournamentId) {
         Optional<Tournament> tournamentToJoinOptional = tournamentRepository.findById(tournamentId);
-        if (tournamentToJoinOptional.isEmpty()) return new TeamDTO(-1,null,null);
+        if (tournamentToJoinOptional.isEmpty()) return new TournamentDTO(-1L,null,null,null,-1L);
         Optional<Team> optionalTeam = teamRepository.findById(teamId);
-        if (optionalTeam.isEmpty()) return new TeamDTO(-1,null,null);
+        if (optionalTeam.isEmpty()) return new TournamentDTO(-1L,null,null,null,-1L);
         Team team = optionalTeam.get();
         team.setTournament(tournamentToJoinOptional.get());
         tournamentToJoinOptional.get().getCurrentPlayers().add(team);
-        return new TeamDTO(teamId, team.getName(),team.getTeamMembers().stream().map(splatUser ->new UserDTO(splatUser.getUsername(), splatUser.getPassword())).toList());
+        return new TournamentDTO(tournamentId, team.getTournament().getName(),team.getTournament().getCreatedBy(),team.getTournament().getStyle(),team.getTournament().getCurrentPlayers().stream().count());
     }
 }
