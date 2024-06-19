@@ -54,11 +54,15 @@ public class TeamService {
     }
 
     public TeamCreationDTO addTeam(String username, String password, String teamName) {
-        if (!userService.verifyLogin(username,password)) return new TeamCreationDTO(null,null,null);
-
+        if (!userService.verifyLogin(username,password)){
+            System.out.println("Invalid Login");
+            System.out.println("u: "+username+"pw: "+password);
+            return new TeamCreationDTO(null,null,null);
+        }
         Optional<Team> optionalTeam = teamRepository.findAll().stream()
                 .filter(team -> team.getName().equals(teamName)).findFirst();
         if (optionalTeam.isPresent()) {
+            System.out.println("Team Already Present");
             return new TeamCreationDTO(null,null,null);
         }
         Team team = new Team();
@@ -68,8 +72,14 @@ public class TeamService {
                 .findFirst().get();
         user.setTeam(team);
         team.setTeamMembers(List.of(user));
+        System.out.println(team.getId());
+        long ID = teamRepository.findAll().stream().mapToLong(Team::getId).max().getAsLong() + 1L;
+        team.setId(ID);
+
         teamRepository.save(team);
-        return new TeamCreationDTO(username,password,teamName);
+        TeamCreationDTO teamCreationDTO = new TeamCreationDTO(username, password, teamName);
+        System.out.println(teamCreationDTO.toString());
+        return teamCreationDTO;
     }
 
     public TournamentDTO joinTournament(Long teamId, Long tournamentId) {

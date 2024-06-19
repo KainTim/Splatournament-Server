@@ -27,6 +27,12 @@ public class TeamController {
     }
     @PostMapping("add")
     public TeamCreationDTO addTeam(@RequestBody TeamCreationDTO teamCreationDTO){
+        System.out.println("add");
+        return teamService.addTeam(teamCreationDTO.username(), teamCreationDTO.password(), teamCreationDTO.teamname());
+    }
+    @PostMapping("join")
+    public TeamCreationDTO addTeam(@RequestBody TeamCreationDTO teamCreationDTO){
+        System.out.println("add");
         return teamService.addTeam(teamCreationDTO.username(), teamCreationDTO.password(), teamCreationDTO.teamname());
     }
     @PostMapping("joinTournament")

@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Team {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 

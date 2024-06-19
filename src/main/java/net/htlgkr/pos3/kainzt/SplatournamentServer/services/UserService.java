@@ -34,7 +34,14 @@ public class UserService {
         return true;
     }
     public List<UserDTO> getAllUsers(){
-        return userRepository.findAll().stream().map(splatUser -> new UserDTO(splatUser.getUsername(),
+        return userRepository.findAll().stream().map(splatUser -> {
+            if (splatUser.getTeam()==null){
+                Team team = new Team();
+                team.setId(-1L);
+                splatUser.setTeam(team);
+            }
+            return splatUser;
+        }).map(splatUser -> new UserDTO(splatUser.getUsername(),
                 splatUser.getPassword(),splatUser.getTeam().getId())).toList();
     }
 }
