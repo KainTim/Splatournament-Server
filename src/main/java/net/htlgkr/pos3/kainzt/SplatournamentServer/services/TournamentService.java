@@ -19,7 +19,8 @@ public class TournamentService {
                         tournament.getName(),
                         tournament.getCreatedBy(),
                         tournament.getStyle(),
-                        (long) tournament.getCurrentPlayers().size()))
+                        (long) tournament.getCurrentPlayers().size(),
+                        tournament.getBestOf()))
                 .peek(System.out::println).toList();
     }
 

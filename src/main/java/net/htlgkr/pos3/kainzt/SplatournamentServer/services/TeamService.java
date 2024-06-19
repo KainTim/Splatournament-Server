@@ -62,7 +62,7 @@ public class TeamService {
         Optional<Team> optionalTeam = teamRepository.findAll().stream()
                 .filter(team -> team.getName().equals(teamName)).findFirst();
         if (optionalTeam.isPresent()) {
-            return new TeamCreationIdDTO(null,-1L);
+            return new TeamCreationIdDTO(null,-5L);
         }
         Team team = new Team();
         team.setName(teamName);
@@ -76,20 +76,20 @@ public class TeamService {
         team.setTeamMembers(splatUsers);
         teamRepository.save(team);
         return new TeamCreationIdDTO(username,teamRepository.findAll().stream()
-                .filter(team1 -> optionalTeam.get().getName().equals(team1.getName()))
+                .filter(team1 -> user.getTeam().getName().equals(team1.getName()))
                 .findFirst().get().getId());
     }
 
     public TournamentDTO joinTournament(Long teamId, Long tournamentId) {
         Optional<Tournament> tournamentToJoinOptional = tournamentRepository.findById(tournamentId);
-        if (tournamentToJoinOptional.isEmpty()) return new TournamentDTO(-5L,null,null,null,-1L);
+        if (tournamentToJoinOptional.isEmpty()) return new TournamentDTO(-5L,null,null,null,-1L,-1L);
         Optional<Team> optionalTeam = teamRepository.findById(teamId);
-        if (optionalTeam.isEmpty()||tournamentToJoinOptional.get().getCurrentPlayers().size()>tournamentToJoinOptional.get().getMaxTeams()) return new TournamentDTO(-1L,null,null,null,-5L);
+        if (optionalTeam.isEmpty()||tournamentToJoinOptional.get().getCurrentPlayers().size()>tournamentToJoinOptional.get().getMaxTeams()) return new TournamentDTO(-1L,null,null,null,-5L,-1L);
         Team team = optionalTeam.get();
         Tournament tournament = tournamentToJoinOptional.get();
         team.setTournament(tournament);
         tournament.getCurrentPlayers().add(team);
         tournamentRepository.findAll().forEach(tournament1 -> System.out.println(tournament1.getCurrentPlayers().size()));
-        return new TournamentDTO(tournamentId, team.getTournament().getName(),team.getTournament().getCreatedBy(),team.getTournament().getStyle(),team.getTournament().getCurrentPlayers().stream().count());
+        return new TournamentDTO(tournamentId, team.getTournament().getName(),team.getTournament().getCreatedBy(),team.getTournament().getStyle(),team.getTournament().getCurrentPlayers().stream().count(),team.getTournament().getBestOf());
     }
 }
