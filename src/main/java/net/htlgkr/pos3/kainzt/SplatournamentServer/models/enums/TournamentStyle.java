@@ -9,6 +9,13 @@ public enum TournamentStyle {
         public String toString() {
             return "Swiss";
         }
+    },
+    INVALID{
+        @NonNull
+        @Override
+        public String toString() {
+            return "Invalid";
+        }
     };
 
 }
