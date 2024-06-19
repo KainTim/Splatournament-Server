@@ -1,9 +1,6 @@
 package net.htlgkr.pos3.kainzt.SplatournamentServer.services;
 
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamCreationDTO;
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamDTO;
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TournamentDTO;
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.UserDTO;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.*;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.SplatUser;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Team;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Tournament;
@@ -30,8 +27,8 @@ public class TeamService {
     @Autowired
     private TournamentRepository tournamentRepository;
 
-    public boolean joinTeam(String username,String password,String teamName){
-        if (!userService.verifyLogin(username,password)) return false;
+    public TeamCreationIdDTO joinTeam(String username,String password,String teamName){
+        if (!userService.verifyLogin(username,password)) return new TeamCreationIdDTO(null,-1L);
 
         SplatUser user = userRepository.findAll().stream()
                 .filter(splatUser -> splatUser.getUsername().equals(username)).
@@ -39,11 +36,13 @@ public class TeamService {
         Optional<Team> optionalTeam = teamRepository.findAll().stream()
                 .filter(team -> team.getName().equals(teamName)).findFirst();
         if (optionalTeam.isEmpty()) {
-            return false;
+            return new TeamCreationIdDTO(null,-1L);
         }
         optionalTeam.get().getTeamMembers().add(user);
         user.setTeam(optionalTeam.get());
-        return true;
+        return new TeamCreationIdDTO(username,teamRepository.findAll().stream()
+                .filter(team -> optionalTeam.get().getName().equals(team.getName()))
+                .findFirst().get().getId());
     }
 
     public List<TeamDTO> getAllTeams() {
@@ -57,13 +56,13 @@ public class TeamService {
         ).toList();
     }
 
-    public TeamCreationDTO addTeam(String username, String password, String teamName) {
-        if (!userService.verifyLogin(username,password)) return new TeamCreationDTO(null,null,null);
+    public TeamCreationIdDTO addTeam(String username, String password, String teamName) {
+        if (!userService.verifyLogin(username,password)) return new TeamCreationIdDTO(null,-1L);
 
         Optional<Team> optionalTeam = teamRepository.findAll().stream()
                 .filter(team -> team.getName().equals(teamName)).findFirst();
         if (optionalTeam.isPresent()) {
-            return new TeamCreationDTO(null,null,null);
+            return new TeamCreationIdDTO(null,-1L);
         }
         Team team = new Team();
         team.setName(teamName);
@@ -76,17 +75,21 @@ public class TeamService {
         splatUsers.add(user);
         team.setTeamMembers(splatUsers);
         teamRepository.save(team);
-        return new TeamCreationDTO(username,password,teamName);
+        return new TeamCreationIdDTO(username,teamRepository.findAll().stream()
+                .filter(team1 -> optionalTeam.get().getName().equals(team1.getName()))
+                .findFirst().get().getId());
     }
 
     public TournamentDTO joinTournament(Long teamId, Long tournamentId) {
         Optional<Tournament> tournamentToJoinOptional = tournamentRepository.findById(tournamentId);
         if (tournamentToJoinOptional.isEmpty()) return new TournamentDTO(-5L,null,null,null,-1L);
         Optional<Team> optionalTeam = teamRepository.findById(teamId);
-        if (optionalTeam.isEmpty()) return new TournamentDTO(-1L,null,null,null,-5L);
+        if (optionalTeam.isEmpty()||tournamentToJoinOptional.get().getCurrentPlayers().size()>tournamentToJoinOptional.get().getMaxTeams()) return new TournamentDTO(-1L,null,null,null,-5L);
         Team team = optionalTeam.get();
-        team.setTournament(tournamentToJoinOptional.get());
-        tournamentToJoinOptional.get().getCurrentPlayers().add(team);
+        Tournament tournament = tournamentToJoinOptional.get();
+        team.setTournament(tournament);
+        tournament.getCurrentPlayers().add(team);
+        tournamentRepository.findAll().forEach(tournament1 -> System.out.println(tournament1.getCurrentPlayers().size()));
         return new TournamentDTO(tournamentId, team.getTournament().getName(),team.getTournament().getCreatedBy(),team.getTournament().getStyle(),team.getTournament().getCurrentPlayers().stream().count());
     }
 }

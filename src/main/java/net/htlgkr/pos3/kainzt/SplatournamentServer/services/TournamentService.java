@@ -20,7 +20,7 @@ public class TournamentService {
                         tournament.getCreatedBy(),
                         tournament.getStyle(),
                         (long) tournament.getCurrentPlayers().size()))
-                .toList();
+                .peek(System.out::println).toList();
     }
 
     public void addTournament(Tournament tournament) {

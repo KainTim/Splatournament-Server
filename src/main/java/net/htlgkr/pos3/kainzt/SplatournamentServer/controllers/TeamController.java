@@ -1,9 +1,6 @@
 package net.htlgkr.pos3.kainzt.SplatournamentServer.controllers;
 
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.JoinTournamentDTO;
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamCreationDTO;
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamDTO;
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TournamentDTO;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.*;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.SplatUser;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Team;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.services.TeamService;
@@ -25,11 +22,11 @@ public class TeamController {
         return teamService.getAllTeams();
     }
     @PostMapping("join")
-    public boolean joinTeam(@RequestParam String username, @RequestParam String password,@RequestParam String teamname){
-        return teamService.joinTeam(username,password,teamname);
+    public TeamCreationIdDTO joinTeam(@RequestBody TeamCreationDTO teamCreationDTO){
+        return teamService.joinTeam(teamCreationDTO.username(), teamCreationDTO.password(), teamCreationDTO.teamname());
     }
     @PostMapping("add")
-    public TeamCreationDTO addTeam(@RequestBody TeamCreationDTO teamCreationDTO){
+    public TeamCreationIdDTO addTeam(@RequestBody TeamCreationDTO teamCreationDTO){
         return teamService.addTeam(teamCreationDTO.username(), teamCreationDTO.password(), teamCreationDTO.teamname());
     }
     @PostMapping("joinTournament")
