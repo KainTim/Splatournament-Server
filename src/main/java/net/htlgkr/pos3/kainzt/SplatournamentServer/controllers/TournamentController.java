@@ -1,5 +1,7 @@
 package net.htlgkr.pos3.kainzt.SplatournamentServer.controllers;
 
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.SetDTO;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.AvailableSetDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TournamentCreationDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TournamentDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Tournament;

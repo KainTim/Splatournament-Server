@@ -4,11 +4,9 @@ package net.htlgkr.pos3.kainzt.SplatournamentServer.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.enums.TournamentStyle;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,7 +24,7 @@ public class Tournament {
     private String createdBy;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Team> currentPlayers;
+    private List<Team> currentTeams;
 
 
 }

@@ -24,4 +24,6 @@ public class Team {
     @OneToMany(cascade = CascadeType.ALL)
     private List<SplatUser> teamMembers;
 
+    private Long inSetWithTeamID;
+
 }

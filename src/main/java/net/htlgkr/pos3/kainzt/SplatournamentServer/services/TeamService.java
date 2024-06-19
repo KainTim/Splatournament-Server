@@ -1,9 +1,6 @@
 package net.htlgkr.pos3.kainzt.SplatournamentServer.services;
 
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamCreationDTO;
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamDTO;
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TournamentDTO;
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.UserDTO;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.*;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.SplatUser;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Team;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Tournament;
@@ -82,7 +79,16 @@ public class TeamService {
         if (optionalTeam.isEmpty()) return new TournamentDTO(-1L,null,null,null,-1L);
         Team team = optionalTeam.get();
         team.setTournament(tournamentToJoinOptional.get());
-        tournamentToJoinOptional.get().getCurrentPlayers().add(team);
-        return new TournamentDTO(tournamentId, team.getTournament().getName(),team.getTournament().getCreatedBy(),team.getTournament().getStyle(),team.getTournament().getCurrentPlayers().stream().count());
+        tournamentToJoinOptional.get().getCurrentTeams().add(team);
+        return new TournamentDTO(tournamentId, team.getTournament().getName(),team.getTournament().getCreatedBy(),team.getTournament().getStyle(),team.getTournament().getCurrentTeams().stream().count());
+    }
+    public SetDTO getAvailableSet(AvailableSetDTO availableSetDTO) {
+        Team teamOther = tournamentRepository.findById(availableSetDTO.tournamentID()).get().getCurrentTeams()
+                .stream().filter(team -> team.getInSetWithTeamID() != null)
+                .findAny().get();
+        teamOther.setInSetWithTeamID(availableSetDTO.teamID());
+        Team team = teamRepository.findById(availableSetDTO.teamID()).get();
+        team.setInSetWithTeamID(teamOther.getId());
+        return new SetDTO(availableSetDTO.teamID(), teamOther.getId(),tournamentRepository.findById(availableSetDTO.tournamentID()).get().getBestOf());
     }
 }

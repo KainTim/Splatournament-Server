@@ -1,9 +1,6 @@
 package net.htlgkr.pos3.kainzt.SplatournamentServer.controllers;
 
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.JoinTournamentDTO;
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamCreationDTO;
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TeamDTO;
-import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TournamentDTO;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.*;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.SplatUser;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Team;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.services.TeamService;
@@ -36,5 +33,8 @@ public class TeamController {
     public TournamentDTO joinTournament(@RequestBody JoinTournamentDTO tournamentDTO){
         return teamService.joinTournament(tournamentDTO.teamId(), tournamentDTO.tournamentId());
     }
-
+    @GetMapping("getAvailableSet")
+    public SetDTO getAvailableSet(@RequestBody AvailableSetDTO availableSetDTO){
+        return teamService.getAvailableSet(availableSetDTO);
+    }
 }

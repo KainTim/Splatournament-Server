@@ -1,6 +1,9 @@
 package net.htlgkr.pos3.kainzt.SplatournamentServer.services;
 
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.AvailableSetDTO;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.SetDTO;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.dtos.TournamentDTO;
+import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Team;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.models.Tournament;
 import net.htlgkr.pos3.kainzt.SplatournamentServer.repositories.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,7 @@ public class TournamentService {
                         tournament.getName(),
                         tournament.getCreatedBy(),
                         tournament.getStyle(),
-                        (long) tournament.getCurrentPlayers().size()))
+                        (long) tournament.getCurrentTeams().size()))
                 .toList();
     }
 
