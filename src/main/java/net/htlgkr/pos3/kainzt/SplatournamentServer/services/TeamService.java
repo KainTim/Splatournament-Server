@@ -26,8 +26,12 @@ public class TeamService {
     @Autowired
     private TournamentRepository tournamentRepository;
 
-    public boolean joinTeam(String username,String password,String teamName){
-        if (!userService.verifyLogin(username,password)) return false;
+    public TeamCreationDTO joinTeam(String username,String password,String teamName){
+        if (!userService.verifyLogin(username,password)) {
+            System.out.println("Invalid Login");
+            System.out.println("u: "+username+"pw: "+password);
+            return new TeamCreationDTO(null,null,null);
+        }
 
         SplatUser user = userRepository.findAll().stream()
                 .filter(splatUser -> splatUser.getUsername().equals(username)).
@@ -35,11 +39,14 @@ public class TeamService {
         Optional<Team> optionalTeam = teamRepository.findAll().stream()
                 .filter(team -> team.getName().equals(teamName)).findFirst();
         if (optionalTeam.isEmpty()) {
-            return false;
+            return new TeamCreationDTO(null,null,null);
         }
         optionalTeam.get().getTeamMembers().add(user);
         user.setTeam(optionalTeam.get());
-        return true;
+
+        TeamCreationDTO teamCreationDTO = new TeamCreationDTO(username, password, teamName);
+        System.out.println(teamCreationDTO.toString());
+        return teamCreationDTO;
     }
 
     public List<TeamDTO> getAllTeams() {

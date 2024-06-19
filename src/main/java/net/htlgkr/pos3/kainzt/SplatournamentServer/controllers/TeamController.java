@@ -22,15 +22,10 @@ public class TeamController {
         return teamService.getAllTeams();
     }
     @PostMapping("join")
-    public boolean joinTeam(@RequestParam String username, @RequestParam String password,@RequestParam String teamname){
-        return teamService.joinTeam(username,password,teamname);
+    public TeamCreationDTO joinTeam(@RequestBody TeamCreationDTO teamCreationDTO){
+        return teamService.joinTeam(teamCreationDTO.username(), teamCreationDTO.password(), teamCreationDTO.teamname());
     }
     @PostMapping("add")
-    public TeamCreationDTO addTeam(@RequestBody TeamCreationDTO teamCreationDTO){
-        System.out.println("add");
-        return teamService.addTeam(teamCreationDTO.username(), teamCreationDTO.password(), teamCreationDTO.teamname());
-    }
-    @PostMapping("join")
     public TeamCreationDTO addTeam(@RequestBody TeamCreationDTO teamCreationDTO){
         System.out.println("add");
         return teamService.addTeam(teamCreationDTO.username(), teamCreationDTO.password(), teamCreationDTO.teamname());
